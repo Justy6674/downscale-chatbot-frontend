@@ -36,7 +36,7 @@ const categories = {
 };
 
 function ChatbotUI() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([{ text: "Hi! How can I assist you today?", sender: "ai" }]);
   const [input, setInput] = useState("");
   const [loadedCategories, setLoadedCategories] = useState([]);
 
@@ -72,17 +72,15 @@ function ChatbotUI() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-[#f7f2d3] p-6">
-      <div className="max-w-xl w-full bg-white p-6 rounded-xl shadow-lg border border-[#b68a71]">
-        <h1 className="text-3xl font-bold text-[#b68a71] mb-4 text-center">Downscale AI Assistant</h1>
-        <h2 className="text-lg text-gray-700 text-center italic">Meet AbeAI, your personal health and wellness guide.</h2>
-        <p className="text-lg mb-6 text-gray-700 text-center">
-          Please enter your question below or select from the available options.
-        </p>
+    <div className="w-full h-screen flex items-center justify-center bg-[#f7f2d3] p-6">
+      <div className="max-w-md w-full bg-white p-6 rounded-xl shadow-lg border border-[#b68a71]">
+        <h1 className="text-xl font-bold text-[#b68a71] text-center">Downscale AI Assistant</h1>
+        <h2 className="text-sm text-gray-700 text-center italic mb-4">Meet AbeAI, your personal health and wellness guide.</h2>
 
-        <div className="h-64 overflow-auto border border-[#b68a71] bg-white p-4 rounded-lg">
+        {/* Chat Window */}
+        <div className="h-64 overflow-auto border border-[#b68a71] bg-white p-3 rounded-lg">
           {messages.map((msg, index) => (
-            <div key={index} className={`my-2 ${msg.sender === "user" ? "text-right" : "text-left"}`}>
+            <div key={index} className={`my-2 flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
               <span className={msg.sender === "user" ? "bg-[#b68a71] text-white p-2 rounded-lg" : "bg-gray-300 p-2 rounded-lg"}>
                 {msg.text}
               </span>
@@ -90,16 +88,17 @@ function ChatbotUI() {
           ))}
         </div>
 
-        <div className="w-full flex flex-col space-y-4 mt-4">
+        {/* Category Selections */}
+        <div className="w-full flex flex-col space-y-3 mt-4">
           {loadedCategories.map((category, idx) => (
             <div key={idx} className="opacity-0 animate-fade-in">
-              <h3 className="text-[#b68a71] font-bold text-lg mb-2 text-center">{category}</h3>
-              <div className="flex flex-wrap justify-center gap-2">
+              <h3 className="text-[#b68a71] font-bold text-md text-center">{category}</h3>
+              <div className="grid grid-cols-2 gap-2">
                 {categories[category].map((option) => (
                   <button
                     key={option}
                     onClick={() => sendMessage(option)}
-                    className="bg-white text-[#b68a71] px-4 py-2 rounded-full border border-[#b68a71] hover:bg-[#b68a71] hover:text-white transition-all"
+                    className="bg-white text-[#b68a71] px-4 py-2 rounded-lg border border-[#b68a71] hover:bg-[#b68a71] hover:text-white transition-all"
                   >
                     {option}
                   </button>
@@ -109,6 +108,7 @@ function ChatbotUI() {
           ))}
         </div>
 
+        {/* Text Input */}
         <div className="flex w-full mt-4">
           <input  
             value={input}
@@ -116,7 +116,7 @@ function ChatbotUI() {
             placeholder="Type your question..."
             className="flex-grow border border-[#b68a71] rounded-lg p-3 bg-white text-lg focus:ring-2 focus:ring-[#b68a71]"
           />
-          <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-6 py-3 rounded-lg hover:bg-[#a0745f] transition-all text-lg">
+          <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-4 py-2 rounded-lg hover:bg-[#a0745f] transition-all">
             Send
           </button>
         </div>
