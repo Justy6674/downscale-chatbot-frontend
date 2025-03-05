@@ -31,38 +31,33 @@ const ChatbotUI = () => {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 w-[350px] rounded-lg shadow-lg font-[Open_Sans] bg-[#f7f2d3] border border-[#b68a71] flex flex-col">
-      {isOpen && (
-        <div className="flex flex-col h-[500px]">
-          <div className="bg-[#b68a71] text-white p-3 rounded-t-lg flex justify-between items-center">
-            <h1 className="text-lg font-bold">AbeAi Assistant</h1>
-            <button onClick={() => setIsOpen(false)} className="text-white font-bold">✖</button>
-          </div>
-          <div className="p-4 h-full overflow-y-auto bg-white flex flex-col">
-            {messages.map((msg, index) => (
-              <div key={index} className={`mb-2 flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`p-3 rounded-lg max-w-[75%] shadow-md ${msg.sender === "user" ? "bg-[#b68a71] text-white" : "bg-gray-200 text-black"}`}>
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex p-3 border-t border-[#b68a71] bg-white">
-            <input
-              type="text"
-              className="flex-1 p-2 border border-gray-300 rounded-lg"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your question..."
-            />
-            <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-4 py-2 rounded-lg shadow">Send</button>
-            <button onClick={resetChat} className="ml-2 bg-gray-300 text-black px-4 py-2 rounded-lg shadow">Reset</button>
-          </div>
+    <div className="flex flex-col items-center justify-center h-screen bg-[#f7f2d3] font-[Open_Sans]">
+      <div className="w-full max-w-md border border-[#b68a71] rounded-lg shadow-lg bg-white">
+        <div className="bg-[#b68a71] text-white p-3 rounded-t-lg flex justify-between items-center">
+          <h1 className="text-lg font-bold">AbeAi Assistant</h1>
+          <button onClick={() => setIsOpen(false)} className="text-white font-bold">✖</button>
         </div>
-      )}
-      {!isOpen && (
-        <button onClick={() => setIsOpen(true)} className="bg-[#b68a71] text-white px-4 py-2 rounded-lg shadow-lg">Open Chat</button>
-      )}
+        <div className="p-4 h-[400px] overflow-y-auto bg-white flex flex-col">
+          {messages.map((msg, index) => (
+            <div key={index} className={`mb-2 flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
+              <div className={`p-3 rounded-lg max-w-[75%] shadow-md ${msg.sender === "user" ? "bg-[#b68a71] text-white" : "bg-gray-200 text-black"}`}>
+                {msg.text}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex p-3 border-t border-[#b68a71] bg-white">
+          <input
+            type="text"
+            className="flex-1 p-2 border border-gray-300 rounded-lg"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your question..."
+          />
+          <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-4 py-2 rounded-lg shadow">Send</button>
+          <button onClick={resetChat} className="ml-2 bg-gray-300 text-black px-4 py-2 rounded-lg shadow">Reset</button>
+        </div>
+      </div>
     </div>
   );
 };
