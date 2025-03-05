@@ -94,4 +94,5 @@ const chatContainer = document.createElement("div");
 chatContainer.id = "chatbot-container";
 document.body.appendChild(chatContainer);
 createRoot(chatContainer).render(<ChatbotUI />);
+export default ChatbotUI;
 
