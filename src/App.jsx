@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
+import "./index.css";
 
 const categories = {
   "🩺 Health & Wellness": ["Body Metrics", "Medication Management", "Mindfulness & Sleep"],
@@ -36,7 +37,7 @@ function ChatbotUI() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 bg-[#b68a71] text-white p-5 rounded-full shadow-lg text-lg hover:bg-[#a0745f] transition-all"
+          className="fixed bottom-4 right-4 bg-[#b68a71] text-white p-4 rounded-full shadow-lg text-lg hover:bg-[#a0745f] transition-all flex items-center gap-2"
         >
           💬 AI Coach
         </button>
@@ -48,7 +49,7 @@ function ChatbotUI() {
             <h2 className="text-lg font-bold text-[#b68a71]">AI Coach</h2>
             <button onClick={() => setIsOpen(false)} className="text-gray-600 text-xl">✖</button>
           </div>
-          <div className="h-64 overflow-auto border-b pb-2">
+          <div className="h-64 overflow-auto border-b pb-2 bg-white p-2 rounded-lg">
             {messages.map((msg, index) => (
               <div key={index} className={`my-2 ${msg.sender === "user" ? "text-right" : "text-left"}`}>
                 <span className={msg.sender === "user" ? "bg-[#b68a71] text-white p-2 rounded-lg" : "bg-gray-300 p-2 rounded-lg"}>
@@ -77,22 +78,5 @@ function ChatbotUI() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your question..."
-              className="flex-grow border rounded-lg p-2 bg-white"
-            />
-            <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-4 py-2 rounded-lg hover:bg-[#a0745f] transition-all">
-              Send
-            </button>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-const chatContainer = document.createElement("div");
-chatContainer.id = "chatbot-container";
-document.body.appendChild(chatContainer);
-createRoot(chatContainer).render(<ChatbotUI />);
-export default ChatbotUI;
+              placeholder="Type your qu
 
