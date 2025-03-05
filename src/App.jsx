@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 
@@ -9,35 +9,49 @@ const categories = {
     "Calorie Goals",
     "Waist Metrics"
   ],
-  "💊 Medications (🔒 Paid Access)": [
-    "Administration Videos ($4.99)",
-    "Clinical Evidence ($9.99)",
-    "Side Effect Management ($6.99)"
+  "💊 Medications (🔒 Restricted Access)": [
+    "Administration Videos",
+    "Clinical Evidence",
+    "Side Effect Management"
   ],
   "🍎 Nutrition & Meal Planning": [
-    "Recipes (Free & Premium)",
+    "Recipes",
     "Protein Sources",
-    "Supplements & Affiliate Store",
-    "Diet Planners ($14.99)",
+    "Supplements & Nutrition Guides",
+    "Diet Planners",
     "Water Reminder"
   ],
   "🏋️ Fitness & Activity": [
     "Home Resistance Workouts",
     "Office Exercise Routines",
-    "Complete Training Programmes ($99)",
-    "AI-Personalised Plans ($49/month)"
+    "Complete Training Programmes",
+    "AI-Personalised Plans"
   ],
   "🧠 Mental Health & Sleep": [
     "Mindfulness Activities",
     "Binge Eating Disorder Screen",
     "Sleep Optimisation",
-    "AI Stress Coaching ($29.99/month)"
+    "AI Stress Coaching"
   ]
 };
 
 function ChatbotUI() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [loadedCategories, setLoadedCategories] = useState([]);
+
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < Object.keys(categories).length) {
+        setLoadedCategories((prev) => [...prev, Object.keys(categories)[index]]);
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 300);
+    return () => clearInterval(interval);
+  }, []);
 
   const sendMessage = async (text) => {
     if (!text.trim()) return;
@@ -59,50 +73,53 @@ function ChatbotUI() {
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-[#f7f2d3] p-6">
-      <h1 className="text-4xl font-bold text-[#b68a71] mb-4">AI Chatbot</h1>
-      <p className="text-lg mb-6 text-gray-700">
-        Please enter your question below or select from the premium coaching options.
-      </p>
+      <div className="max-w-xl w-full bg-white p-6 rounded-xl shadow-lg border border-[#b68a71]">
+        <h1 className="text-3xl font-bold text-[#b68a71] mb-4 text-center">Downscale AI Assistant</h1>
+        <h2 className="text-lg text-gray-700 text-center italic">Meet AbeAI, your personal health and wellness guide.</h2>
+        <p className="text-lg mb-6 text-gray-700 text-center">
+          Please enter your question below or select from the available options.
+        </p>
 
-      <div className="w-full max-w-3xl h-96 overflow-auto border border-[#b68a71] bg-white p-4 rounded-lg shadow-md">
-        {messages.map((msg, index) => (
-          <div key={index} className={`my-2 ${msg.sender === "user" ? "text-right" : "text-left"}`}>
-            <span className={msg.sender === "user" ? "bg-[#b68a71] text-white p-2 rounded-lg" : "bg-gray-300 p-2 rounded-lg"}>
-              {msg.text}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <div className="w-full max-w-3xl my-6">
-        {Object.entries(categories).map(([category, options]) => (
-          <div key={category} className="mb-4">
-            <h3 className="text-[#b68a71] font-bold text-lg mb-2">{category}</h3>
-            <div className="grid grid-cols-2 gap-2">
-              {options.map((option) => (
-                <button
-                  key={option}
-                  onClick={() => sendMessage(option)}
-                  className="bg-[#b68a71] text-white px-3 py-2 rounded-lg w-full hover:bg-[#a0745f] transition-all mb-1"
-                >
-                  {option}
-                </button>
-              ))}
+        <div className="h-64 overflow-auto border border-[#b68a71] bg-white p-4 rounded-lg">
+          {messages.map((msg, index) => (
+            <div key={index} className={`my-2 ${msg.sender === "user" ? "text-right" : "text-left"}`}>
+              <span className={msg.sender === "user" ? "bg-[#b68a71] text-white p-2 rounded-lg" : "bg-gray-300 p-2 rounded-lg"}>
+                {msg.text}
+              </span>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <div className="flex w-full max-w-3xl">
-        <input  
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your question..."
-          className="flex-grow border rounded-lg p-3 bg-white text-lg"
-        />
-        <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-6 py-3 rounded-lg hover:bg-[#a0745f] transition-all text-lg">
-          Send
-        </button>
+        <div className="w-full flex flex-col space-y-4 mt-4">
+          {loadedCategories.map((category, idx) => (
+            <div key={idx} className="opacity-0 animate-fade-in">
+              <h3 className="text-[#b68a71] font-bold text-lg mb-2 text-center">{category}</h3>
+              <div className="flex flex-wrap justify-center gap-2">
+                {categories[category].map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => sendMessage(option)}
+                    className="bg-white text-[#b68a71] px-4 py-2 rounded-full border border-[#b68a71] hover:bg-[#b68a71] hover:text-white transition-all"
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex w-full mt-4">
+          <input  
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your question..."
+            className="flex-grow border border-[#b68a71] rounded-lg p-3 bg-white text-lg focus:ring-2 focus:ring-[#b68a71]"
+          />
+          <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-6 py-3 rounded-lg hover:bg-[#a0745f] transition-all text-lg">
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );
