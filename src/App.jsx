@@ -1,38 +1,12 @@
 import { useState } from "react";
-import { createRoot } from "react-dom/client";
 import "./index.css";
 
 const categories = {
-  "📊 Body Metrics": [
-    "BMI Analysis",
-    "Macro Analysis",
-    "Calorie Goals",
-    "Waist Metrics"
-  ],
-  "💊 Medications (🔒 Restricted Access)": [
-    "Administration Videos",
-    "Clinical Evidence",
-    "Side Effect Management"
-  ],
-  "🍎 Nutrition & Meal Planning": [
-    "Recipes",
-    "Protein Sources",
-    "Supplements & Nutrition Guides",
-    "Diet Planners",
-    "Water Reminder"
-  ],
-  "🏋️ Fitness & Activity": [
-    "Home Resistance Workouts",
-    "Office Exercise Routines",
-    "Complete Training Programmes",
-    "AI-Personalised Plans"
-  ],
-  "🧠 Mental Health & Sleep": [
-    "Mindfulness Activities",
-    "Binge Eating Disorder Screen",
-    "Sleep Optimisation",
-    "AI Stress Coaching"
-  ]
+  "📊 Body Metrics": ["BMI Analysis", "Macro Analysis", "Calorie Goals", "Waist Metrics"],
+  "💊 Medications (🔒 Restricted Access)": ["Administration Videos", "Clinical Evidence", "Side Effect Management"],
+  "🍎 Nutrition & Meal Planning": ["Recipes", "Protein Sources", "Supplements & Nutrition Guides", "Diet Planners", "Water Reminder"],
+  "🏋️ Fitness & Activity": ["Home Resistance Workouts", "Office Exercise Routines", "Complete Training Programmes", "AI-Personalised Plans"],
+  "🧠 Mental Health & Sleep": ["Mindfulness Activities", "Binge Eating Disorder Screen", "Sleep Optimisation", "AI Stress Coaching"]
 };
 
 function ChatbotUI() {
@@ -58,58 +32,60 @@ function ChatbotUI() {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-[#f7f2d3] p-6">
-      <div className="max-w-lg w-full bg-white p-6 rounded-lg shadow-xl border border-[#b68a71] flex flex-col">
-        <h1 className="text-xl font-bold text-[#b68a71] text-center">Downscale AI Assistant</h1>
-        <h2 className="text-sm text-gray-700 text-center italic mb-4">Meet AbeAI, your personal health and wellness guide.</h2>
+    <div className="fixed bottom-5 right-5 w-[400px] bg-white shadow-lg rounded-lg border border-[#b68a71] flex flex-col">
+      {/* Header Bar */}
+      <div className="bg-[#b68a71] text-white p-3 rounded-t-lg flex justify-between items-center">
+        <h1 className="text-lg font-bold">Downscale AI Assistant</h1>
+        <button className="text-white font-bold">✖</button>
+      </div>
 
-        {/* Chat Window */}
-        <div className="h-72 overflow-auto border border-[#b68a71] bg-white p-3 rounded-lg flex flex-col space-y-3">
-          {messages.map((msg, index) => (
-            <div key={index} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-              <span className={msg.sender === "user" ? "bg-[#b68a71] text-white p-3 rounded-xl" : "bg-gray-300 p-3 rounded-xl"}>
-                {msg.text}
-              </span>
+      {/* Chat Window */}
+      <div className="h-72 overflow-auto bg-white p-3 flex flex-col space-y-3">
+        {messages.map((msg, index) => (
+          <div key={index} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
+            <span className={msg.sender === "user" ? "bg-[#b68a71] text-white p-3 rounded-xl" : "bg-gray-300 p-3 rounded-xl"}>
+              {msg.text}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Category Buttons */}
+      <div className="w-full flex flex-col space-y-3 p-3">
+        {Object.entries(categories).map(([category, options]) => (
+          <div key={category} className="text-center">
+            <h3 className="text-[#b68a71] font-bold text-md">{category}</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {options.map((option) => (
+                <button
+                  key={option}
+                  onClick={() => sendMessage(option)}
+                  className="bg-white text-[#b68a71] px-4 py-2 rounded-full border border-[#b68a71] hover:bg-[#b68a71] hover:text-white transition-all"
+                >
+                  {option}
+                </button>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Category Selections */}
-        <div className="w-full flex flex-col space-y-3 mt-4">
-          {Object.entries(categories).map(([category, options]) => (
-            <div key={category} className="text-center">
-              <h3 className="text-[#b68a71] font-bold text-md">{category}</h3>
-              <div className="flex flex-wrap justify-center gap-2">
-                {options.map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => sendMessage(option)}
-                    className="bg-white text-[#b68a71] px-4 py-2 rounded-full border border-[#b68a71] hover:bg-[#b68a71] hover:text-white transition-all"
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Input Box */}
-        <div className="flex w-full mt-4">
-          <input  
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your question..."
-            className="flex-grow border border-[#b68a71] rounded-lg p-3 bg-white text-lg focus:ring-2 focus:ring-[#b68a71]"
-          />
-          <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-6 py-3 rounded-lg hover:bg-[#a0745f] transition-all text-lg">
-            Send
-          </button>
-        </div>
+      {/* Input Box */}
+      <div className="flex w-full p-3 border-t border-[#b68a71]">
+        <input  
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type your question..."
+          className="flex-grow border border-[#b68a71] rounded-lg p-3 bg-white text-lg"
+        />
+        <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-4 py-3 rounded-lg">
+          Send
+        </button>
       </div>
     </div>
   );
 }
 
 export default ChatbotUI;
+ 
 
