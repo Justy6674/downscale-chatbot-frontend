@@ -59,15 +59,15 @@ function ChatbotUI() {
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-[#f7f2d3] p-6">
-      <div className="max-w-md w-full bg-white p-6 rounded-xl shadow-lg border border-[#b68a71]">
+      <div className="max-w-lg w-full bg-white p-6 rounded-lg shadow-xl border border-[#b68a71] flex flex-col">
         <h1 className="text-xl font-bold text-[#b68a71] text-center">Downscale AI Assistant</h1>
         <h2 className="text-sm text-gray-700 text-center italic mb-4">Meet AbeAI, your personal health and wellness guide.</h2>
 
         {/* Chat Window */}
-        <div className="h-64 overflow-auto border border-[#b68a71] bg-white p-3 rounded-lg">
+        <div className="h-72 overflow-auto border border-[#b68a71] bg-white p-3 rounded-lg flex flex-col space-y-3">
           {messages.map((msg, index) => (
-            <div key={index} className={`my-2 flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-              <span className={msg.sender === "user" ? "bg-[#b68a71] text-white p-2 rounded-lg" : "bg-gray-300 p-2 rounded-lg"}>
+            <div key={index} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
+              <span className={msg.sender === "user" ? "bg-[#b68a71] text-white p-3 rounded-xl" : "bg-gray-300 p-3 rounded-xl"}>
                 {msg.text}
               </span>
             </div>
@@ -77,8 +77,8 @@ function ChatbotUI() {
         {/* Category Selections */}
         <div className="w-full flex flex-col space-y-3 mt-4">
           {Object.entries(categories).map(([category, options]) => (
-            <div key={category}>
-              <h3 className="text-[#b68a71] font-bold text-md text-center">{category}</h3>
+            <div key={category} className="text-center">
+              <h3 className="text-[#b68a71] font-bold text-md">{category}</h3>
               <div className="flex flex-wrap justify-center gap-2">
                 {options.map((option) => (
                   <button
@@ -94,7 +94,7 @@ function ChatbotUI() {
           ))}
         </div>
 
-        {/* Text Input */}
+        {/* Input Box */}
         <div className="flex w-full mt-4">
           <input  
             value={input}
