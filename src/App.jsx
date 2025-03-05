@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 
@@ -38,20 +38,6 @@ const categories = {
 function ChatbotUI() {
   const [messages, setMessages] = useState([{ text: "Hi! How can I assist you today?", sender: "ai" }]);
   const [input, setInput] = useState("");
-  const [loadedCategories, setLoadedCategories] = useState([]);
-
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < Object.keys(categories).length) {
-        setLoadedCategories((prev) => [...prev, Object.keys(categories)[index]]);
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 300);
-    return () => clearInterval(interval);
-  }, []);
 
   const sendMessage = async (text) => {
     if (!text.trim()) return;
@@ -90,23 +76,21 @@ function ChatbotUI() {
 
         {/* Category Selections */}
         <div className="w-full flex flex-col space-y-3 mt-4">
-          {loadedCategories.map((category, idx) => (
-            categories[category] ? ( // ✅ Prevents undefined category errors
-              <div key={idx} className="opacity-0 animate-fade-in">
-                <h3 className="text-[#b68a71] font-bold text-md text-center">{category}</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {categories[category].map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => sendMessage(option)}
-                      className="bg-white text-[#b68a71] px-4 py-2 rounded-lg border border-[#b68a71] hover:bg-[#b68a71] hover:text-white transition-all"
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
+          {Object.entries(categories).map(([category, options]) => (
+            <div key={category}>
+              <h3 className="text-[#b68a71] font-bold text-md text-center">{category}</h3>
+              <div className="flex flex-wrap justify-center gap-2">
+                {options.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => sendMessage(option)}
+                    className="bg-white text-[#b68a71] px-4 py-2 rounded-full border border-[#b68a71] hover:bg-[#b68a71] hover:text-white transition-all"
+                  >
+                    {option}
+                  </button>
+                ))}
               </div>
-            ) : null
+            </div>
           ))}
         </div>
 
@@ -118,7 +102,7 @@ function ChatbotUI() {
             placeholder="Type your question..."
             className="flex-grow border border-[#b68a71] rounded-lg p-3 bg-white text-lg focus:ring-2 focus:ring-[#b68a71]"
           />
-          <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-4 py-2 rounded-lg hover:bg-[#a0745f] transition-all">
+          <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-6 py-3 rounded-lg hover:bg-[#a0745f] transition-all text-lg">
             Send
           </button>
         </div>
