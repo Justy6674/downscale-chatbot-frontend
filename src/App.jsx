@@ -91,20 +91,22 @@ function ChatbotUI() {
         {/* Category Selections */}
         <div className="w-full flex flex-col space-y-3 mt-4">
           {loadedCategories.map((category, idx) => (
-            <div key={idx} className="opacity-0 animate-fade-in">
-              <h3 className="text-[#b68a71] font-bold text-md text-center">{category}</h3>
-              <div className="grid grid-cols-2 gap-2">
-                {categories[category].map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => sendMessage(option)}
-                    className="bg-white text-[#b68a71] px-4 py-2 rounded-lg border border-[#b68a71] hover:bg-[#b68a71] hover:text-white transition-all"
-                  >
-                    {option}
-                  </button>
-                ))}
+            categories[category] ? ( // ✅ Prevents undefined category errors
+              <div key={idx} className="opacity-0 animate-fade-in">
+                <h3 className="text-[#b68a71] font-bold text-md text-center">{category}</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {categories[category].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => sendMessage(option)}
+                      className="bg-white text-[#b68a71] px-4 py-2 rounded-lg border border-[#b68a71] hover:bg-[#b68a71] hover:text-white transition-all"
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : null
           ))}
         </div>
 
