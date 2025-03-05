@@ -20,7 +20,7 @@ const ChatbotUI = () => {
         body: JSON.stringify({ message: text })
       });
       const data = await response.json();
-      setMessages((prev) => [...prev, { text: data.reply, sender: "ai" }]);
+      setMessages((prev) => [...prev, { text: data.reply || "I'm not sure how to answer that.", sender: "ai" }]);
     } catch (error) {
       setMessages((prev) => [...prev, { text: "Error: Unable to fetch response.", sender: "ai" }]);
     }
