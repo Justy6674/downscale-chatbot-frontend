@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && tailwindcss -i ./src/input.css -o ./dist/assets/output.css --minify",
     "start": "vite preview"
   },
   "dependencies": {
@@ -13,14 +13,13 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.2.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.20",
-    "globals": "^15.1.0",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.10",
-    "vite": "^6.2.0"
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.2.11"
   }
 }
+
