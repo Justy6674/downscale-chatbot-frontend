@@ -3,7 +3,7 @@ import "./index.css";
 
 const ChatbotUI = () => {
   const [messages, setMessages] = useState([
-    { text: "Hi! How can I assist you today?", sender: "ai" }
+    { text: "Hi! How can I assist you with your weight loss journey today?", sender: "ai" }
   ]);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(true);
@@ -27,17 +27,26 @@ const ChatbotUI = () => {
   };
 
   const resetChat = () => {
-    setMessages([{ text: "Hi! How can I assist you today?", sender: "ai" }]);
+    setMessages([{ text: "Hi! How can I assist you with your weight loss journey today?", sender: "ai" }]);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-[#f7f2d3] font-[Open_Sans]">
-      <div className="w-full max-w-md border border-[#b68a71] rounded-lg shadow-lg bg-white">
-        <div className="bg-[#b68a71] text-white p-3 rounded-t-lg flex justify-between items-center">
-          <h1 className="text-lg font-bold">AbeAi Assistant</h1>
-          <button onClick={() => setIsOpen(false)} className="text-white font-bold">✖</button>
-        </div>
-        <div className="p-4 h-[400px] overflow-y-auto bg-white flex flex-col">
+    <main className="flex flex-col items-center justify-center min-h-screen bg-[#f7f2d3] font-[Open_Sans] p-4">
+      <article className="w-full max-w-md border border-[#b68a71] rounded-lg shadow-lg bg-white">
+        <header className="bg-[#b68a71] text-white p-3 rounded-t-lg flex justify-between items-center">
+          <h1 className="text-lg font-bold">Weight Loss Support Assistant</h1>
+          <button 
+            onClick={() => setIsOpen(false)} 
+            className="text-white font-bold"
+            aria-label="Close assistant"
+          >✖</button>
+        </header>
+        <section 
+          className="p-4 h-[400px] overflow-y-auto bg-white flex flex-col"
+          role="log"
+          aria-live="polite"
+          aria-label="Chat messages"
+        >
           {messages.map((msg, index) => (
             <div key={index} className={`mb-2 flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
               <div className={`p-3 rounded-lg max-w-[75%] shadow-md ${msg.sender === "user" ? "bg-[#b68a71] text-white" : "bg-gray-200 text-black"}`}>
@@ -45,20 +54,30 @@ const ChatbotUI = () => {
               </div>
             </div>
           ))}
-        </div>
-        <div className="flex p-3 border-t border-[#b68a71] bg-white">
+        </section>
+        <footer className="flex p-3 border-t border-[#b68a71] bg-white">
           <input
             type="text"
             className="flex-1 p-2 border border-gray-300 rounded-lg"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your question..."
+            onKeyPress={(e) => e.key === 'Enter' && sendMessage(input)}
+            placeholder="Ask about weight loss support..."
+            aria-label="Type your question"
           />
-          <button onClick={() => sendMessage(input)} className="ml-2 bg-[#b68a71] text-white px-4 py-2 rounded-lg shadow">Send</button>
-          <button onClick={resetChat} className="ml-2 bg-gray-300 text-black px-4 py-2 rounded-lg shadow">Reset</button>
-        </div>
-      </div>
-    </div>
+          <button 
+            onClick={() => sendMessage(input)} 
+            className="ml-2 bg-[#b68a71] text-white px-4 py-2 rounded-lg shadow hover:bg-opacity-90 transition-opacity"
+            aria-label="Send message"
+          >Send</button>
+          <button 
+            onClick={resetChat} 
+            className="ml-2 bg-gray-300 text-black px-4 py-2 rounded-lg shadow hover:bg-gray-400 transition-colors"
+            aria-label="Reset conversation"
+          >Reset</button>
+        </footer>
+      </article>
+    </main>
   );
 };
 
